@@ -14,18 +14,14 @@ import logging
 from pathlib import Path
 
 # Core Functions
-from tiled.client import from_profile
-
 from apsbits.core.best_effort_init import init_bec_peaks
 from apsbits.core.catalog_init import init_catalog
 from apsbits.core.instrument_init import init_instrument
 from apsbits.core.instrument_init import make_devices
 from apsbits.core.run_engine_init import init_RE
-
 # Utility functions
 from apsbits.utils.aps_functions import host_on_aps_subnet
 from apsbits.utils.baseline_setup import setup_baseline_stream
-
 # Configuration functions
 from apsbits.utils.config_loaders import load_config
 from apsbits.utils.helper_functions import register_bluesky_magics
@@ -64,6 +60,8 @@ register_bluesky_magics()
 # Bluesky initialization block
 
 if iconfig.get("TILED_PROFILE_NAME", {}):
+    from tiled.client import from_profile
+
     profile_name = iconfig.get("TILED_PROFILE_NAME")
     tiled_client = from_profile(profile_name)
 
@@ -107,7 +105,16 @@ else:
 make_devices(clear=False, file="devices.yml", device_manager=instrument)
 
 if host_on_aps_subnet():
+    import gi
+    import hklpy2
+    import hklpy2.backends.hkl_soleil
+
     make_devices(clear=False, file="devices_aps_only.yml", device_manager=instrument)
+    version_md = RE.md["versions"]
+    version_md["gi"] = ".".join(map(str, gi.version_info))
+    version_md["gi._versions"] = gi._versions
+    version_md["hklpy2"] = hklpy2.__version__
+    version_md["libhkl"] = hklpy2.backends.hkl_soleil.libhkl.VERSION
 
 # Setup baseline stream with connect=False is default
 # Devices with the label 'baseline' will be added to the baseline stream.

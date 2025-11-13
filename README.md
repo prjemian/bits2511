@@ -10,6 +10,11 @@ export ENV_NAME=bits2511
 conda create -y -n $ENV_NAME python=3.12 hkl
 conda activate $ENV_NAME
 pip install apsbits
+
+# for the libhkl support library
+conda env config vars set LD_LIBRARY_PATH="${CONDA_PREFIX}/lib"
+conda deactivate
+conda activate $ENV_NAME
 ```
 
 
