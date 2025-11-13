@@ -114,7 +114,8 @@ if host_on_aps_subnet():
     make_devices(clear=False, file="devices_aps_only.yml", device_manager=instrument)
     version_md = RE.md["versions"]
     version_md["gi"] = ".".join(map(str, gi.version_info))
-    version_md["gi._versions"] = gi._versions
+    # FIXME: gi._versions is a dict that does not validate in event_model
+    # version_md["gi._versions"] = gi._versions
     version_md["hklpy2"] = hklpy2.__version__
     version_md["libhkl"] = hklpy2.backends.hkl_soleil.libhkl.VERSION
 
@@ -125,3 +126,6 @@ setup_baseline_stream(sd, oregistry, connect=False)
 from .plans.sim_plans import sim_count_plan  # noqa: E402, F401
 from .plans.sim_plans import sim_print_plan  # noqa: E402, F401
 from .plans.sim_plans import sim_rel_scan_plan  # noqa: E402, F401
+
+# adjust the scan_id to the current catalog
+oregistry["scan_id_epics"].put(len(cat))

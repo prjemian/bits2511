@@ -6,7 +6,7 @@ ICONFIG_VERSION: 2.0.1
 # Add additional configuration for use with your instrument.
 
 ### The short name for the databroker catalog.
-DATABROKER_CATALOG: temp
+DATABROKER_CATALOG: developer-bs5_test-2024-12
 
 ### RunEngine configuration
 RUN_ENGINE:
@@ -17,7 +17,7 @@ RUN_ENGINE:
 
     ### EPICS PV to use for the `scan_id`.
     ### Default: `RE.md["scan_id"]` (not using an EPICS PV)
-    # SCAN_ID_PV: "IOC:bluesky_scan_id"
+    SCAN_ID_PV: "gp:gp:int20"
 
     ### Where to "autosave" the RE.md dictionary.
     ### Defaults:
@@ -36,9 +36,8 @@ BASELINE_LABEL:
 
 ### Best Effort Callback Configurations
 ### Defaults: all true
-### except no plots in queueserver
 BEC:
-    BASELINE: true
+    BASELINE: false
     HEADING: true
     PLOTS: false
     TABLE: true
