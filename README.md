@@ -6,17 +6,26 @@ Instrument Github Repository to be used with BITS structure at the APS
 ## Installing your own BITS instrument
 
 ```bash
-export ENV_NAME=BITS_env
-conda create -y -n $ENV_NAME python=3.11
+export ENV_NAME=bits2511
+conda create -y -n $ENV_NAME python=3.12 hkl
 conda activate $ENV_NAME
 pip install apsbits
 ```
 
 
 ## Creating a New Instrument
+
+For each separate instrument you will create:
+
 ```bash
-export YOUR_INSTRUMENT_NAME=new_instrument
+export YOUR_INSTRUMENT_NAME=bits2511
 create-bits $YOUR_INSTRUMENT_NAME
+```
+
+
+## Install your Instrument(s)
+
+```bash
 pip install -e .
 ```
 
@@ -26,7 +35,7 @@ pip install -e .
 To start the bluesky instrument session in a ipython execute the next command in a terminal:
 
 ```bash
-ipython
+ipython -i -c "from bits2511.startup import *"
 ```
 
 ## Jupyter Notebook Start
