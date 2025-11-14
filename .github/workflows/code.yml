@@ -35,7 +35,7 @@ jobs:
           set -vxeuo pipefail
           python -m pip install --upgrade pip
           python -m pip install pre-commit
-          pre-commit run --all-files
+          pre-commit run --verbose --all-files
 
   test-matrix:
     name: Python ${{ matrix.python-version }} # - Redis ${{ matrix.redis-version }}
