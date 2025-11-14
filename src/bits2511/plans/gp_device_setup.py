@@ -75,7 +75,8 @@ def change_motor_srev(oregistry, srev=2_000):
 
 @with_registry
 @bluesky_plan
-def change_noisy_signal_parameters(oregistry,
+def change_noisy_signal_parameters(
+    oregistry,
     fwhm: float = 0.15,
     peak: float = 10_000,
     noise: float = 0.08,
@@ -134,6 +135,7 @@ def setup_area_detectors(oregistry):
         from .stubs import ad_peak_simulation
         from .stubs import change_ad_simulated_image_parameters
         from .stubs import dither_ad_peak_position
+
         yield from change_ad_simulated_image_parameters(adsimdet)
         # EPICS will dither the peak position
         yield from dither_ad_peak_position(adsimdet)
