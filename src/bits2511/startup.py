@@ -19,11 +19,9 @@ from apsbits.core.catalog_init import init_catalog
 from apsbits.core.instrument_init import init_instrument
 from apsbits.core.instrument_init import make_devices
 from apsbits.core.run_engine_init import init_RE
-
 # Utility functions
 from apsbits.utils.aps_functions import host_on_aps_subnet
 from apsbits.utils.baseline_setup import setup_baseline_stream
-
 # Configuration functions
 from apsbits.utils.config_loaders import load_config
 from apsbits.utils.helper_functions import register_bluesky_magics
@@ -113,7 +111,7 @@ if host_on_aps_subnet():
 
     make_devices(clear=False, file="devices_aps_only.yml", device_manager=instrument)
     version_md = RE.md["versions"]
-    version_md["gi"] = ".".join(map(str, gi.version_info))
+    version_md["gi"] = gi.__version__  # ".".join(map(str, gi.version_info))
     # FIXME: gi._versions is a dict that does not validate in event_model
     # version_md["gi._versions"] = gi._versions
     version_md["hklpy2"] = hklpy2.__version__
@@ -127,5 +125,19 @@ from .plans.sim_plans import sim_count_plan  # noqa: E402, F401
 from .plans.sim_plans import sim_print_plan  # noqa: E402, F401
 from .plans.sim_plans import sim_rel_scan_plan  # noqa: E402, F401
 
+# ---------------------------
+# --------------------------- local changes
+# ---------------------------
+
 # adjust the scan_id to the current catalog
 oregistry["scan_id_epics"].put(len(cat))
+
+
+def on_startup():
+    """Custom session initialization."""
+    from bits2511.plans.gp_device_setup import _custom_controls_setup
+
+    yield from _custom_controls_setup()
+
+
+RE(on_startup())

@@ -4,7 +4,7 @@ Simulated noisy temperature controller using swait record.
 
 import logging
 
-from apsbits.core.instrument_init import with_registry
+from apsbits.core.instrument_init import oregistry
 from ophyd import Component
 from ophyd import EpicsSignal
 from ophyd import PVPositioner
@@ -92,10 +92,8 @@ class TemperaturePositioner(PVPositioner):
         if not self.done.get():
             self.setpoint.put(self.position)
 
-    @with_registry
     def setup_temperature(
         self,
-        oregistry,
         setpoint=None,
         noise=2,
         rate=6,

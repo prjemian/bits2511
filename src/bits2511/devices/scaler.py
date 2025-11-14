@@ -24,7 +24,7 @@ from collections import OrderedDict
 
 import ophyd
 import ophyd.scaler
-from apsbits.core.instrument_init import with_registry
+from apsbits.core.instrument_init import oregistry
 from ophyd import DynamicDeviceComponent as DDCpt
 from ophyd import FormattedComponent as FCpt
 
@@ -36,8 +36,7 @@ class SubstituteScalerChannelCounts(ophyd.EpicsSignalRO):
 
     override_signal_name = None
 
-    @with_registry
-    def get(self, oregistry, **kwargs):
+    def get(self, **kwargs):
         """."""
         signal = oregistry.find(
             name=self.parent.override_signal_name.get(),

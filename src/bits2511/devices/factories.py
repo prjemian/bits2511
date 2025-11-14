@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 logger.bsdev(__file__)
 
 MOTOR_CLASS = "ophyd.EpicsMotor"
-MOTOR_CLASS = "instrument.devices.motors.EpicsMotor_SREV"
+MOTOR_CLASS = "bits2511.devices.motors.EpicsMotor_SREV"
 
 
 def predefined_device(*, name="", creator=""):
@@ -44,7 +44,7 @@ def predefined_device(*, name="", creator=""):
     .. code-block:: yaml
         :linenos:
 
-        instrument.devices.factories.predefined_device:
+        bits2511.devices.factories.predefined_device:
           - {creator: ophyd.sim.motor, name: sim_motor}
           - {creator: ophyd.sim.noisy_det, name: sim_det}
     """
@@ -133,7 +133,7 @@ def motors(
     .. code-block:: yaml
         :linenos:
 
-        instrument.devices.factories.motors:
+        bits2511.devices.factories.motors:
           - {prefix: "ioc:m", first: 1, last: 4, labels: ["motor"]}
           # skip m5 & m6
           - {prefix: "ioc:m", first: 7, last: 22, labels: ["motor"]}

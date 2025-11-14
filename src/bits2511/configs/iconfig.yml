@@ -11,9 +11,9 @@ DATABROKER_CATALOG: developer-bs5_test-2024-12
 ### RunEngine configuration
 RUN_ENGINE:
     DEFAULT_METADATA:
-        beamline_id: demo_instrument
-        instrument_name: Most Glorious Scientific Instrument
-        proposal_id: commissioning
+        beamline_id: bits2511
+        instrument_name: Build 2025-11 from BITS-Starter repo
+        proposal_id: development
 
     ### EPICS PV to use for the `scan_id`.
     ### Default: `RE.md["scan_id"]` (not using an EPICS PV)

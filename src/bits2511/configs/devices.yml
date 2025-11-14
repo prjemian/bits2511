@@ -31,6 +31,45 @@ apstools.devices.ad_creator:
       - roi1
       - stats1
 
+apstools.devices.SimulatedApsPssShutterWithStatus:
+- name: shutter
+  labels: [ "shutters", baseline ]
+
+apstools.synApps.TransformRecord:
+  - name: ad_transform
+    prefix: "gp:userTran19"
+
+bits2511.devices.factories.motors:
+- { prefix: "gp:m", first: 1, last: 4, labels: [ "motor" ] }
+# gp:m5 & gp:m6 reserved by gp:Slit1
+- { prefix: "gp:m", first: 7, last: 22, labels: [ "motor" ] }
+# gp:m23 .. gp:m28 used by psic
+# gp:m29 .. gp:m32 used by fourc
+- { prefix: "gp:m", first: 33, last: 44, labels: [ "motor" ] }
+# gp:m45 .. gp:m47 used by monochromator
+- { prefix: "gp:m", first: 48, last: 56, labels: [ "motor" ] }
+
+bits2511.devices.ioc_stats.IocInfoDevice: [ { name: gp_stats, prefix: "gp:" } ]
+
+bits2511.devices.kohzu_monochromator.KohzuDCM:
+- name: dcm
+  prefix: "gp:"
+  labels: [ "monochromator", baseline ]
+  m_th: m45
+  m_y: m46
+  m_z: m47
+
+bits2511.devices.scaler.ScalerCH:
+- name: scaler1
+  prefix: gp:scaler1
+  labels: [ "scalers", "detectors" ]
+
+bits2511.devices.temperature_signal.TemperaturePositioner:
+- name: temperature
+  prefix: gp:userCalc8
+  egu: C
+  limits: [ -20, 255 ]
+
 hklpy2.creator:
 - name: sim4c
   labels: [ "diffractometer" ]
@@ -60,42 +99,11 @@ hklpy2.creator:
   geometry: K6C
   labels: [ "diffractometer" ]
 
-instrument.devices.factories.motors:
-- { prefix: "gp:m", first: 1, last: 4, labels: [ "motor" ] }
-# gp:m5 & gp:m6 reserved by gp:Slit1
-- { prefix: "gp:m", first: 7, last: 22, labels: [ "motor" ] }
-# gp:m23 .. gp:m28 used by psic
-# gp:m29 .. gp:m32 used by fourc
-- { prefix: "gp:m", first: 33, last: 44, labels: [ "motor" ] }
-# gp:m45 .. gp:m47 used by monochromator
-- { prefix: "gp:m", first: 48, last: 56, labels: [ "motor" ] }
-
-instrument.devices.ioc_stats.IocInfoDevice: [ { name: gp_stats, prefix: "gp:" } ]
-
-instrument.devices.kohzu_monochromator.KohzuDCM:
-- name: dcm
-  prefix: "gp:"
-  labels: [ "monochromator", baseline ]
-  m_th: m45
-  m_y: m46
-  m_z: m47
-
-instrument.devices.scaler.ScalerCH:
-- name: scaler1
-  prefix: gp:scaler1
-  labels: [ "scalers", "detectors" ]
-
-instrument.devices.temperature_signal.TemperaturePositioner:
-- name: temperature
-  prefix: gp:userCalc8
-  egu: C
-  limits: [ -20, 255 ]
-
-ophyd.EpicsMotor:
-- {name: m1, prefix: "gp:m1", labels: ["motor"]}
-- {name: m2, prefix: "gp:m2", labels: ["motor"]}
-- {name: m3, prefix: "gp:m3", labels: ["motor"]}
-- {name: m4, prefix: "gp:m4", labels: ["motor"]}
+# ophyd.EpicsMotor:
+# - {name: m1, prefix: "gp:m1", labels: ["motor"]}
+# - {name: m2, prefix: "gp:m2", labels: ["motor"]}
+# - {name: m3, prefix: "gp:m3", labels: ["motor"]}
+# - {name: m4, prefix: "gp:m4", labels: ["motor"]}
 
 ophyd.EpicsSignal:
 - name: scan_id_epics

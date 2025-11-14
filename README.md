@@ -1,7 +1,6 @@
-# BITS Starter
+# BITS2511
 
-Instrument Github Repository to be used with BITS structure at the APS
-
+Bluesky BITS instrument, using 2025-11 BITS v2.0.0.
 
 ## Installing your own BITS instrument
 
