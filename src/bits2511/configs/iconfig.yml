@@ -6,7 +6,7 @@ ICONFIG_VERSION: 2.0.1
 # Add additional configuration for use with your instrument.
 
 ### The short name for the databroker catalog.
-DATABROKER_CATALOG: developer-bs5_test-2024-12
+DATABROKER_CATALOG: training
 
 ### RunEngine configuration
 RUN_ENGINE:

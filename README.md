@@ -43,6 +43,7 @@ ipython -i -c "from bits2511.startup import *"
 ```
 
 ## Jupyter Notebook Start
+
 Start JupyterLab, a Jupyter notebook server, or a notebook, VSCode.
 
 ## Starting the BITS Package
