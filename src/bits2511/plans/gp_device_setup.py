@@ -193,6 +193,9 @@ def setup_scaler1(oregistry):
     # choose just the channels with EPICS names
     scaler1.select_channels()  # does not block
 
+    # Increase RATE field to help T be TP.
+    scaler1.update_rate.put(20)  # Hz
+
     # examples: make shortcuts to specific channels assigned in EPICS
 
     timebase = scaler1.channels.chan01.s
