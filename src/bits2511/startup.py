@@ -11,6 +11,8 @@ Includes:
 
 # Standard Library Imports
 import logging
+import os
+import sys
 from pathlib import Path
 
 # ------ resume
@@ -20,15 +22,13 @@ from apsbits.core.catalog_init import init_catalog
 from apsbits.core.instrument_init import init_instrument
 from apsbits.core.instrument_init import make_devices
 from apsbits.core.run_engine_init import init_RE
-
 # Utility functions
 from apsbits.utils.aps_functions import host_on_aps_subnet
 from apsbits.utils.baseline_setup import setup_baseline_stream
-
 # Configuration functions
 from apsbits.utils.config_loaders import load_config
 from apsbits.utils.helper_functions import register_bluesky_magics
-from apsbits.utils.helper_functions import running_in_queueserver
+# from apsbits.utils.helper_functions import running_in_queueserver  # TODO: see below, apsbits #184
 from apsbits.utils.logging_setup import configure_logging
 
 # Configuration block
@@ -72,6 +72,17 @@ bec, peaks = init_bec_peaks(iconfig)
 cat = init_catalog(iconfig)
 RE, sd = init_RE(iconfig, subscribers=[bec, cat])
 
+if iconfig.get("TILED_PROFILE_NAME", {}) == {}:
+    """Also publish document through tiled to PostgreSQL."""
+    from bluesky_tiled_plugins import TiledWriter
+    from tiled.client import from_profile
+
+    profile_name = "prjcat"
+    tiled_client = from_profile(profile_name)
+    tiled_cat = tiled_client["/prjcat"]
+    tw = TiledWriter(tiled_cat)
+    RE.subscribe(tw)
+
 # Optional Nexus callback block
 # delete this block if not using Nexus
 if iconfig.get("NEXUS_DATA_FILES", {}).get("ENABLE", False):
@@ -89,6 +100,19 @@ if iconfig.get("SPEC_DATA_FILES", {}).get("ENABLE", False):
 
     init_specwriter_with_RE(RE)
 
+def running_in_queueserver() -> bool:
+    """Replaces function in apsbits.utils.helper_functions."""
+    # apsbits #184
+    keys = """
+        QS_CONFIG_YML
+        _QSERVER_RE_WORKER_ACTIVE
+        _QSERVER_RUNNING_IPYTHON_KERNEL
+    """.split()
+    for key in keys:
+        if os.environ.get(key) is not None:
+            return True
+    return False
+
 # These imports must come after the above setup.
 # Queue server block
 if running_in_queueserver():
@@ -96,6 +120,8 @@ if running_in_queueserver():
     ### plan by plan.
     from apstools.plans import lineup2  # noqa: F401
     from bluesky.plans import *  # noqa: F403
+
+    logger.info("Queueserver session")
 else:
     # Import bluesky plans and stubs with prefixes set by common conventions.
     # The apstools plans and utils are imported by '*'.
@@ -103,6 +129,8 @@ else:
     from apstools.utils import *  # noqa: F403
     from bluesky import plan_stubs as bps  # noqa: F401
     from bluesky import plans as bp  # noqa: F401
+
+    logger.info("Interactive session")
 
 # Experiment specific logic, device and plan loading. # Create the devices.
 make_devices(clear=False, file="devices.yml", device_manager=instrument)
