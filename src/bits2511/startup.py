@@ -77,10 +77,11 @@ if iconfig.get("TILED_PROFILE_NAME", {}) == {}:
     from bluesky_tiled_plugins import TiledWriter
     from tiled.client import from_profile
 
+    logging.getLogger("httpx").setLevel(logging.WARNING)
     profile_name = "prjcat"
     tiled_client = from_profile(profile_name)
     tiled_cat = tiled_client["/prjcat"]
-    tw = TiledWriter(tiled_cat)
+    tw = TiledWriter(tiled_cat, batch_size=1)
     RE.subscribe(tw)
 
 # Optional Nexus callback block
