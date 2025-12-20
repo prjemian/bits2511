@@ -175,7 +175,7 @@ from .plans.sim_plans import sim_rel_scan_plan  # noqa: E402, F401
 
 # adjust the scan_id to the current catalog
 oregistry["scan_id_epics"].put(len(cat))
-
+sd.monitors.append(oregistry["temperature"])  # TODO: via label, like baseline?
 
 def on_startup():
     """Custom session initialization."""

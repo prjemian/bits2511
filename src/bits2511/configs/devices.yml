@@ -69,6 +69,7 @@ bits2511.devices.temperature_signal.TemperaturePositioner:
   prefix: gp:userCalc8
   egu: C
   limits: [ -20, 255 ]
+  labels: [ "baseline", "monitor" ]
 
 # ophyd.EpicsMotor:
 # - {name: m1, prefix: "gp:m1", labels: ["motor"]}
