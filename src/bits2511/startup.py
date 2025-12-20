@@ -125,8 +125,8 @@ if running_in_queueserver():
     ### To make all the standard plans available in QS, import by '*', otherwise import
     ### plan by plan.
     from apstools.plans import lineup2  # noqa: F401
+    from bits2511.plans.gp_device_setup import change_noisy_signal_parameters  # noqa: F401
     from bluesky.plans import *  # noqa: F403
-    from bits2511.plans.gp_device_setup import change_noisy_signal_parameters
 
     logger.info("Queueserver session")
 else:

@@ -30,12 +30,15 @@ logger.bsdev(__file__)
 
 oregistry = None
 
+
 @with_registry
 def _localizer(oregistry_arg):
     global oregistry
     oregistry = oregistry_arg
 
+
 _localizer()
+
 
 @bluesky_plan
 def _custom_controls_setup():
