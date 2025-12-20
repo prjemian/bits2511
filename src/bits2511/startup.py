@@ -81,9 +81,9 @@ if iconfig.get("TILED_PROFILE_NAME", {}) == {}:
     from tiled.client import from_profile
 
     logging.getLogger("httpx").setLevel(logging.WARNING)
-    profile_name = "prjcat"
+    profile_name = "demo1"
     tiled_client = from_profile(profile_name)
-    tiled_cat = tiled_client["/prjcat"]
+    tiled_cat = tiled_client["/raw"]
     tw = TiledWriter(tiled_cat, batch_size=1)
     RE.subscribe(tw)
 
@@ -126,6 +126,7 @@ if running_in_queueserver():
     ### plan by plan.
     from apstools.plans import lineup2  # noqa: F401
     from bluesky.plans import *  # noqa: F403
+    from bits2511.plans.gp_device_setup import change_noisy_signal_parameters
 
     logger.info("Queueserver session")
 else:
