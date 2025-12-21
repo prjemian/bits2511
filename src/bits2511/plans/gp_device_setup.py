@@ -7,6 +7,7 @@
     ~change_motor_srev
     ~change_noisy_signal_parameters
     ~enable_user_calcs
+    ~gp_controls_setup
     ~setup_area_detectors
     ~setup_monochromator
     ~setup_scaler1
@@ -30,7 +31,7 @@ logger.bsdev(__file__)
 
 
 @bluesky_plan
-def _custom_controls_setup():
+def gp_controls_setup():
     """Initialize all the local controls (with default settings)."""
     logger.info("Starting custom controls setup.")
     functions = [  # NOTE: order is important
