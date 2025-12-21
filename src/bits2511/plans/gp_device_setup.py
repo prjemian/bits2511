@@ -18,7 +18,7 @@ import logging
 import sys
 
 import numpy
-from apsbits.core.instrument_init import with_registry
+from apsbits.core.instrument_init import oregistry
 from apstools.devices import setup_lorentzian_swait
 from apstools.plans import run_blocking_function
 from bluesky import plan_stubs as bps
@@ -27,17 +27,6 @@ from ophydregistry.exceptions import ComponentNotFound
 
 logger = logging.getLogger(__name__)
 logger.bsdev(__file__)
-
-oregistry = None
-
-
-@with_registry
-def _localizer(oregistry_arg):
-    global oregistry
-    oregistry = oregistry_arg
-
-
-_localizer()
 
 
 @bluesky_plan
