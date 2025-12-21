@@ -7,6 +7,7 @@
     ~change_motor_srev
     ~change_noisy_signal_parameters
     ~enable_user_calcs
+    ~gp_controls_setup
     ~setup_area_detectors
     ~setup_monochromator
     ~setup_scaler1
@@ -18,7 +19,7 @@ import logging
 import sys
 
 import numpy
-from apsbits.core.instrument_init import with_registry
+from apsbits.core.instrument_init import oregistry
 from apstools.devices import setup_lorentzian_swait
 from apstools.plans import run_blocking_function
 from bluesky import plan_stubs as bps
@@ -29,9 +30,8 @@ logger = logging.getLogger(__name__)
 logger.bsdev(__file__)
 
 
-@with_registry
 @bluesky_plan
-def _custom_controls_setup(oregistry):
+def gp_controls_setup():
     """Initialize all the local controls (with default settings)."""
     logger.info("Starting custom controls setup.")
     functions = [  # NOTE: order is important
@@ -53,9 +53,8 @@ def _custom_controls_setup(oregistry):
     logger.info("Local controls setup finished.")
 
 
-@with_registry
 @bluesky_plan
-def change_motor_srev(oregistry, srev=2_000):
+def change_motor_srev(srev=2_000):
     """
     Make sure the motors are mini-stepping.
 
@@ -73,10 +72,8 @@ def change_motor_srev(oregistry, srev=2_000):
             yield from bps.mv(motor.steps_per_revolution, srev)
 
 
-@with_registry
 @bluesky_plan
 def change_noisy_signal_parameters(
-    oregistry,
     fwhm: float = 0.15,
     peak: float = 10_000,
     noise: float = 0.08,
@@ -106,9 +103,8 @@ def change_noisy_signal_parameters(
     )
 
 
-@with_registry
 @bluesky_plan
-def enable_user_calcs(oregistry):
+def enable_user_calcs():
     """Enable all the user calcs, calcouts, sseqs, and transforms."""
     logger.info("enable_user_calcs()")
     for key in "user_calcouts user_calcs user_sseqs user_transforms".split():
@@ -119,9 +115,8 @@ def enable_user_calcs(oregistry):
             yield from bps.mv(obj.enable, 1)
 
 
-@with_registry
 @bluesky_plan
-def setup_area_detectors(oregistry):
+def setup_area_detectors():
     """Setup the area detectors."""
     logger.info("setup_area_detectors()")
     yield from bps.null()
@@ -147,9 +142,8 @@ def setup_area_detectors(oregistry):
         print(f"Peak Dithering setup failed: {reason}")
 
 
-@with_registry
 @bluesky_plan
-def setup_monochromator(oregistry):
+def setup_monochromator():
     """Setup the monochromator."""
     logger.info("setup_monochromator()")
     dcm = oregistry["dcm"]
@@ -159,9 +153,8 @@ def setup_monochromator(oregistry):
     yield from dcm.into_control_range(p_theta=2, p_y=-5, p_z=5)
 
 
-@with_registry
 @bluesky_plan
-def setup_scaler1(oregistry):
+def setup_scaler1():
     """
     Setup the scaler.
 
@@ -220,9 +213,8 @@ def setup_scaler1(oregistry):
         setattr(module, item.name, item)
 
 
-@with_registry
 @bluesky_plan
-def setup_shutter(oregistry, delay=0.05):
+def setup_shutter(delay=0.05):
     """
     Setup the shutter.
 
@@ -237,9 +229,8 @@ def setup_shutter(oregistry, delay=0.05):
     shutter.delay_s = delay
 
 
-@with_registry
 @bluesky_plan
-def setup_temperature_positioner(oregistry):
+def setup_temperature_positioner():
     """Setup the temperature controller (positioner)."""
     logger.info("setup_temperature_positioner()")
     logger.debug("Setup temperature controller (positioner)")

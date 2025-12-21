@@ -164,6 +164,10 @@ except (ImportError, ModuleNotFoundError) as exinfo:
 # Devices with the label 'baseline' will be added to the baseline stream.
 setup_baseline_stream(sd, oregistry, connect=False)
 
+# TODO: https://github.com/BCDA-APS/BITS/issues/187
+sd.monitors.append(oregistry["temperature"])
+
+
 from .plans.sim_plans import sim_count_plan  # noqa: E402, F401
 from .plans.sim_plans import sim_print_plan  # noqa: E402, F401
 from .plans.sim_plans import sim_rel_scan_plan  # noqa: E402, F401
@@ -178,9 +182,9 @@ oregistry["scan_id_epics"].put(len(cat))
 
 def on_startup():
     """Custom session initialization."""
-    from bits2511.plans.gp_device_setup import _custom_controls_setup
+    from bits2511.plans.gp_device_setup import gp_controls_setup
 
-    yield from _custom_controls_setup()
+    yield from gp_controls_setup()
 
 
 RE(on_startup())
